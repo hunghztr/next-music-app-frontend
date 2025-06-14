@@ -1,13 +1,8 @@
-"use client"
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+"use client";
+import Footer from "@/components/footer/Footer";
 import "./globals.css";
+import Header from "@/components/header/Header";
 
-// Tạo theme tùy chỉnh (nếu muốn)
-const theme = createTheme({
-  palette: {
-    mode: "light", // hoặc "dark"
-  },
-});
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -16,10 +11,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+        <Header />
         {children}
-        </ThemeProvider>
+        <Footer />
       </body>
     </html>
   );
