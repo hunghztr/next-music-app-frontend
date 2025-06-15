@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Box, Button, Divider } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import Link from "next/link";
 
 interface IProps {
   data: ITrackTop[];
@@ -11,7 +13,7 @@ interface IProps {
 }
 const MainSlider = (props: IProps) => {
   const { title, data } = props;
-  console.log(data);
+
   const NextArrow = (props: any) => {
     return (
       <Button
@@ -77,7 +79,10 @@ const MainSlider = (props: IProps) => {
                 height={100}
               />
               <div className="mt-1.5">
-                <h3 className="font-bold">{i.title}</h3>
+                <Link href={`/track/${i.id}?audio=${i.trackUrl}`}>
+                  <h3 className="font-bold">{i.title}</h3>
+                </Link>
+
                 <h5>{i.description}</h5>
               </div>
             </div>
