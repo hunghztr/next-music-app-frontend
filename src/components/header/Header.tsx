@@ -15,8 +15,9 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { Avatar, Container } from "@mui/material";
+import { Avatar, Container, Button } from "@mui/material";
 import Link from "next/link";
+import {signIn, signOut, useSession} from "next-auth/react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,6 +60,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const { data: session } = useSession();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -103,7 +106,10 @@ export default function Header() {
       <MenuItem onClick={handleMenuClose}>
         <Link href={"profile"}>Profile</Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={() =>{
+        handleMenuClose()
+        signOut()
+      }}>Logout</MenuItem>
     </Menu>
   );
 
@@ -190,16 +196,28 @@ export default function Header() {
                 cursor: "pointer",
               }}
             >
-              <span>
-                <Link href={"/playlist"}>Playlist</Link>
-              </span>
-              <span>
-                <Link href={"/like"}>Likes</Link>
-              </span>
-              <span>
-                <Link href={"/upload"}>Uploads</Link>
-              </span>
-              <Avatar onClick={handleProfileMenuOpen}>H</Avatar>
+              {session ? (
+                <>
+                  <span>
+                    <Link href={"/playlist"}>Playlist</Link>
+                  </span>
+                  <span>
+                    <Link href={"/like"}>Likes</Link>
+                  </span>
+                  <span>
+                    <Link href={"/upload"}>Uploads</Link>
+                  </span>
+                  <Avatar onClick={handleProfileMenuOpen}>H</Avatar>
+                </>
+              ) : (
+                <Link href={"/auth/signin"}>
+                  <Button
+                      // onClick={() => signIn()}
+                      variant="outlined" color="inherit">
+                    Login
+                  </Button>
+                </Link>
+              )}
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
               <IconButton
