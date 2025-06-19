@@ -15,6 +15,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 import { useRouter } from 'next/navigation'
+import AlertInfo from "@/components/alert/AlertInfo";
+import * as React from "react";
 const AuthSignIn = () => {
     const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -63,13 +65,7 @@ const AuthSignIn = () => {
     }
 
     return (
-        <Box
-            sx={{
-                // backgroundImage: "linear-gradient(to bottom, #ff9aef, #fedac1, #d5e1cf, #b7e6d9)",
-                // backgroundColor: "#b7e6d9",
-                // backgroundRepeat: "no-repeat"
-            }}
-        >
+        <Box>
             <Grid container
                   sx={{
                       display: "flex",
@@ -194,19 +190,7 @@ const AuthSignIn = () => {
                     </div>
                 </Grid>
             </Grid>
-
-            <Snackbar
-                open={openMessage}
-                // autoHideDuration={5000}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-                <Alert
-                    onClose={() => setOpenMessage(false)}
-                    severity="error" sx={{ width: '100%' }}>
-                    {resMessage}
-                </Alert>
-            </Snackbar>
-
+            <AlertInfo openMessage={openMessage} setOpenMessage={setOpenMessage} resMessage={resMessage} />
         </Box>
 
     )

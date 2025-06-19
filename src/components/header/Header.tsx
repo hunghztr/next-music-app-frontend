@@ -17,7 +17,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Avatar, Container, Button } from "@mui/material";
 import Link from "next/link";
-import {signIn, signOut, useSession} from "next-auth/react";
+import { signOut, useSession} from "next-auth/react";
+import {useRenderByClient} from "@/utils/customHook";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,6 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+
   const { data: session } = useSession();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -104,7 +106,7 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link href={"profile"}>Profile</Link>
+            <Link href={`/profile/${session?.user.id}`}>Profile</Link>
       </MenuItem>
       <MenuItem onClick={() =>{
         handleMenuClose()
@@ -196,7 +198,7 @@ export default function Header() {
                 cursor: "pointer",
               }}
             >
-              {session ? (
+              {(session) ? (
                 <>
                   <span>
                     <Link href={"/playlist"}>Playlist</Link>
@@ -205,7 +207,7 @@ export default function Header() {
                     <Link href={"/like"}>Likes</Link>
                   </span>
                   <span>
-                    <Link href={"/upload"}>Uploads</Link>
+                    <Link href={"/track/upload"}>Uploads</Link>
                   </span>
                   <Avatar onClick={handleProfileMenuOpen}>H</Avatar>
                 </>

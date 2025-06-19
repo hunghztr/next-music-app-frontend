@@ -1,6 +1,15 @@
 
 export {}
 declare global{
+  interface IPage{
+    meta:{
+      current:number;
+      pageSize:number;
+      pages:number;
+      total:number;
+    };
+    result:ITrackTop[]
+  }
   interface IRequest{
     url:string;
     method:string;
@@ -35,5 +44,12 @@ declare global{
     message: string;
     statusCode: number | string;
     data?: T;
+  }
+  interface IShareTrack extends ITrackTop{
+    isPlaying?:boolean;
+  }
+  interface ITrackContext{
+    currentTrack:IShareTrack;
+    setCurrentTrack : (value:IShareTrack) => void;
   }
 }

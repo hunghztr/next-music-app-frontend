@@ -79,7 +79,7 @@ const MainSlider = (props: IProps) => {
                 height={100}
               />
               <div className="mt-1.5">
-                <Link href={`/track/${i.id}?audio=${i.trackUrl}`}>
+                <Link href={`/track/${i.id}?audio=${i.trackUrl}&id=${i.id}`}>
                   <h3 className="font-bold">{i.title}</h3>
                 </Link>
 

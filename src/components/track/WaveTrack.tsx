@@ -7,6 +7,7 @@ import {WaveSurferOptions} from "wavesurfer.js";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import {Tooltip} from "@mui/material";
+import {useTrackContext} from "@/lib/TrackContext";
 
 const COMMENTS = [
     {
@@ -31,7 +32,8 @@ const COMMENTS = [
         content: 'good job'
     },
 ]
-const WaveTrack = () => {
+const WaveTrack = ({track}:{track:IShareTrack|null}) => {
+    const {currentTrack , setCurrentTrack} =useTrackContext() as ITrackContext;
         const ref = useRef<HTMLDivElement>(null);
         const refTime = useRef<HTMLDivElement>(null);
         const refHover = useRef<HTMLDivElement>(null);
@@ -97,20 +99,30 @@ const WaveTrack = () => {
             wave.once('interaction', () => {
                 wave.play()
                 setPlay(true)
+                setCurrentTrack({...currentTrack,isPlaying:false})
             })
         }
-
-
+    useEffect(() => {
+        if(track?.id !== currentTrack.id && currentTrack.isPlaying){
+            wave?.pause()
+            setPlay(false)
+        }
+    }, [currentTrack]);
         const onPlayClick = useCallback(() => {
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            wave?.isPlaying() ? wave?.pause() : wave?.play();
+            if(wave?.isPlaying()){
+                wave?.pause()
+                if(track) setCurrentTrack({...currentTrack,isPlaying:false})
+            }else{
+                wave?.play();
+                if(track) setCurrentTrack({...currentTrack,isPlaying:false})            }
             setPlay(wave?.isPlaying() || false);
         }, [wave]);
 
         const getPercent = (moment: number) => {
             const duration = 246;
             const percent = Math.round((moment / duration) * 100);
-            return percent+'%';
+            return percent + '%';
         }
         return (
             <div className='w-full h-full relative'>
@@ -131,8 +143,8 @@ const WaveTrack = () => {
                         {play ? <PauseIcon/> : <PlayArrowIcon/>}
                     </Button>
                     <div className='ml-5'>
-                        <h1 className='font-bold text-[2vw]'>Đây là bài hát</h1>
-                        <h3 className='text-[1.2vw]'>đây là tác giả</h3>
+                        <h1 className='font-bold text-[2vw]'>{track?.title}</h1>
+                        <h3 className='text-[1.2vw]'>{track?.uploader.name}</h3>
                     </div>
                 </div>
 
@@ -149,13 +161,13 @@ const WaveTrack = () => {
                     <div className='w-full absolute bottom-1/2 z-20 translate-y-1/2 flex'>
                         {COMMENTS.map((i => {
                             return (<Tooltip key={i.id} title={i.content} arrow>
-                                <img   width={20} height={20}
-                                        src={`${i.avatar}`}
-                            style={{position:'absolute',left: getPercent(i.moment)}}
-                            onPointerMove={() =>{
-                                const hover = refHover.current!;
-                                hover.style.width = getPercent(i.moment);
-                            }}/>
+                                <img width={20} height={20}
+                                     src={`${i.avatar}`}
+                                     style={{position: 'absolute', left: getPercent(i.moment)}}
+                                     onPointerMove={() => {
+                                         const hover = refHover.current!;
+                                         hover.style.width = getPercent(i.moment);
+                                     }}/>
                             </Tooltip>)
 
                         }))}
