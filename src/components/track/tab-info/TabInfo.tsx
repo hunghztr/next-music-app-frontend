@@ -61,7 +61,6 @@ const TabInfo = ({trackUpload}:
         imgUrl: '',
         category: '',
     })
-    console.log({info})
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -102,7 +101,7 @@ const TabInfo = ({trackUpload}:
             },
             headers:{"Authorization": `Bearer ${session?.accessToken}`},
         });
-        if(res.statusCode === 400){
+        if(res.status === 400){
             setResMessage(res.message)
             setOpenMessage(true);
         }else{
@@ -119,11 +118,26 @@ const TabInfo = ({trackUpload}:
     }
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            setPreviewUrl(url);
-            setImageFile(file);
-        }
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+                if (img.width !== 250 || img.height !== 250) {
+                    setResMessage("Ảnh phải có kích thước đúng 250x250px");
+                    setOpenMessage(true);
+                    setImageFile(null);
+                    setPreviewUrl(null);
+                    return;
+                }
+
+                setImageFile(file);
+                setPreviewUrl(URL.createObjectURL(file));
+            };
+            img.src = reader.result as string;
+        };
+        reader.readAsDataURL(file);
     };
     useEffect(() => {
         if (trackUpload) {

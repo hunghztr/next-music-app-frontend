@@ -11,7 +11,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import {useTrackContext} from "@/lib/TrackContext";
 import PauseIcon from "@mui/icons-material/Pause";
 import Link from 'next/link';
-const Profile = ({res} :{res :IBackendRes<IPage>}) =>{
+const Profile = ({res} :{res :IBackendRes<IPage<ITrackTop>>}) =>{
     const {currentTrack,setCurrentTrack} = useTrackContext() as ITrackContext;
 
     return (
