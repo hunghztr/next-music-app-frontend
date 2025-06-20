@@ -11,16 +11,15 @@ import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
+
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { signOut, useSession} from "next-auth/react";
 import Image from "next/image";
+import LogoutIcon from "@mui/icons-material/Logout";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -133,27 +132,21 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
+      <Link href={`/profile/${session?.user.id}`}>
+      <MenuItem onClick={handleMobileMenuClose}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
+          <MoreIcon />
         </IconButton>
-        <p>Notifications</p>
+        <p>Profile</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      </Link>
+      <MenuItem onClick={() =>{
+        signOut()
+      }}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -161,9 +154,9 @@ export default function Header() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <LogoutIcon />
         </IconButton>
-        <p>Profile</p>
+        <p>Log Out</p>
       </MenuItem>
     </Menu>
   );
@@ -211,7 +204,7 @@ export default function Header() {
                     <Link href={"/track/upload"}>Uploads</Link>
                   </span>
                   <Image onClick={handleProfileMenuOpen}
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/test.png`}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${session.user.avatar?session.user.avatar:'user.png'}`}
                   alt="Avatar"
                   width={35} height={35}/>
                 </>

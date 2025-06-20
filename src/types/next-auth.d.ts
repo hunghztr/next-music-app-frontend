@@ -8,6 +8,7 @@ interface IUser{
     username: string;
     email: string;
     isVerify: boolean;
+    avatar: string;
     type: string;
     role: string;
 }
