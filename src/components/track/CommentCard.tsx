@@ -1,6 +1,10 @@
-import { Avatar, Card, CardHeader, CardContent, Typography } from '@mui/material';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 
 dayjs.extend(relativeTime);
 

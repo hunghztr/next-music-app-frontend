@@ -1,5 +1,5 @@
 import UploadTab from "@/components/track/UploadTab";
-import {Container} from "@mui/material";
+import Container from "@mui/material/Container";
 
 
 const UploadPage = () => {
@@ -11,4 +11,4 @@ const UploadPage = () => {
 
     )
 }
-export default UploadPage;
+export default UploadPage

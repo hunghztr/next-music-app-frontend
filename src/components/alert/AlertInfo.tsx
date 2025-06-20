@@ -10,8 +10,7 @@ const AlertInfo = ({openMessage,setOpenMessage,resMessage}:IProps)=>{
     return (
         <Snackbar
             open={openMessage}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}>
             <Alert
                 onClose={() => setOpenMessage(false)}
                 severity="error" sx={{ width: '100%' }}>

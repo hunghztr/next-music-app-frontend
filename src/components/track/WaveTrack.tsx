@@ -6,18 +6,18 @@ import Button from "@mui/material/Button";
 import {WaveSurferOptions} from "wavesurfer.js";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import {Tooltip} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import {useTrackContext} from "@/lib/TrackContext";
 import CommentTrack from "@/components/track/CommentTrack";
 import Interaction from "@/components/track/Interaction";
 import {sendRequest} from "@/utils/fetchApi";
+import Image from "next/image";
 
 const WaveTrack = ({track, comments, resLikedTrack}:
                    {
                        track: IShareTrack | null; comments: ITrackComment[] | null;
                        resLikedTrack: ITrackTop[] | null
                    }) => {
-
         const {currentTrack, setCurrentTrack} = useTrackContext() as ITrackContext;
         const route = useRouter();
         const [first, setFirst] = useState<boolean>(true)
@@ -124,9 +124,9 @@ const WaveTrack = ({track, comments, resLikedTrack}:
             }
             setPlay(wave?.isPlaying() || false);
         }, [wave,first]);
-
         const getPercent = (moment: number) => {
             const duration = wave?.getDuration();
+            if(!duration) return 0 +"%"
             const percent = Math.round((moment / duration!) * 100);
             return percent + '%';
         }
@@ -166,22 +166,32 @@ const WaveTrack = ({track, comments, resLikedTrack}:
                         </div>
                         <div className='absolute top-0 left-0 h-full bg-white/50' ref={refHover}></div>
                         <div className='w-full absolute bottom-1/2 z-20 translate-y-1/2 flex'>
-                            {comments && comments!.map((i => {
-                                return (<Tooltip key={i.id} title={i.content} arrow>
-                                    <img width={20} height={20}
-                                         src={`http://localhost:8080/api/v1/images/test.png`}
-                                         style={{position: 'absolute', left: getPercent(i.moment)}}
-                                         onPointerMove={() => {
-                                             const hover = refHover.current!;
-                                             hover.style.width = getPercent(i.moment);
-                                         }}/>
-                                </Tooltip>)
+                            {comments && comments.map((i) => {
+                                const percent = getPercent(i.moment);
+                                if (percent === '0%') return null;
+                                return (
+                                    <Tooltip key={i.id} title={i.content} arrow>
+                                        <Image
+                                            alt="Poster"
+                                            width={20}
+                                            height={20}
+                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/test.png`}
+                                            className='object-contain'
+                                            style={{ position: 'absolute', left: percent }}
+                                            onPointerMove={() => {
+                                                const hover = refHover.current!;
+                                                hover.style.width = percent;
+                                            }}
+                                        />
+                                    </Tooltip>
+                                );
+                            })}
 
-                            }))}
                         </div>
                     </div>
                     <div className='w-[250px] h-[250px] bg-gray-400 absolute right-0 top-1/2 -translate-y-1/2'>
-                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}/>
+                        <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                               alt='Poster' fill sizes={'250px'} className='object-contain' />
                     </div>
                 </div>
                 <div className='mt-4'>

@@ -2,7 +2,7 @@
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import {SyntheticEvent, useState} from "react";
-import {Box} from "@mui/material";
+import Box from "@mui/material/Box";
 import TabTrack from "@/components/track/tab-track/TabTrack";
 import TabInfo from "@/components/track/tab-info/TabInfo";
 

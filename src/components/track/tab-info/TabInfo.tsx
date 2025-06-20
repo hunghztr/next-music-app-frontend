@@ -2,7 +2,6 @@ import * as React from 'react';
 import LinearProgress, {LinearProgressProps} from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import {Autocomplete, Button} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {useEffect, useState} from "react";
@@ -11,7 +10,9 @@ import {useSession} from "next-auth/react";
 import {sendRequest} from "@/utils/fetchApi";
 import AlertInfo from "@/components/alert/AlertInfo";
 import {useRouter} from "next/navigation";
-
+import Button from "@mui/material/Button";
+import Autocomplete from "@mui/material/Autocomplete";
+import Image from "next/image";
 type CategoryOption = {
     label: string;
     category: string;
@@ -73,7 +74,7 @@ const TabInfo = ({trackUpload}:
         }
         const formData = new FormData();
         formData.append("fileUpload",imageFile)
-        try {
+
             const res = await axios.post(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/files/upload-img`,
                 formData, {
@@ -81,12 +82,13 @@ const TabInfo = ({trackUpload}:
                 }
             )
              setInfo((prev) => ({...prev,imgUrl:res.data.data.result}))
-            return res.data.data.result;
-        } catch (error) {
-            setResMessage("có lỗi xảy ra, vui lòng tải lại")
-            setOpenMessage(true);
-        }
-        return null;
+
+            if(res.status >= 400) {
+                setResMessage("có lỗi xảy ra, vui lòng tải lại ",)
+                setOpenMessage(true);
+                return null;
+            }
+        return res.data.data.result;
     }
     const handleSaveInfo = async (urlImg : string) =>{
         const res = await sendRequest<IBackendRes<INewTrack>>({
@@ -122,7 +124,7 @@ const TabInfo = ({trackUpload}:
 
         const reader = new FileReader();
         reader.onload = () => {
-            const img = new Image();
+            const img = new window.Image();
             img.onload = () => {
                 if (img.width !== 250 || img.height !== 250) {
                     setResMessage("Ảnh phải có kích thước đúng 250x250px");
@@ -159,7 +161,7 @@ const TabInfo = ({trackUpload}:
                 <div className='w-[20vw] flex flex-col'>
                     <div className='bg-gray-400 w-[20vw] h-[40vh] mb-3 flex items-center justify-center'>
                         {previewUrl ? (
-                            <img src={previewUrl} className='w-full h-full object-cover' />
+                            <Image src={previewUrl} alt='Avatar' className='w-full h-full object-cover' />
                         ) : (
                             <span className='text-white'>Chưa có file</span>
                         )}

@@ -1,5 +1,11 @@
 'use client'
-import { Avatar, Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import  Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import LockIcon from '@mui/icons-material/Lock';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -11,8 +17,6 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Link from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
 import { useRouter } from 'next/navigation'
 import AlertInfo from "@/components/alert/AlertInfo";

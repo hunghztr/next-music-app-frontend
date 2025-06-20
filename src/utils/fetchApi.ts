@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
 import queryString from "query-string"
+import slugify from "slugify";
 export const sendRequest = async  <T>(props : IRequest) =>{
   
   let {
@@ -73,4 +74,16 @@ export const sendRequestFile = async  <T>(props : IRequest) =>{
       })
     }
   })
+}
+export const convertSlugUrl= (str : string) =>{
+  return slugify(str,{
+    lower:true,
+    locale:'vi'
+  })
+}
+export const convertSlugId = (str : string) =>{
+  const regex = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.html$/i;
+  const match = str.match(regex)
+  if(match && match.length >1) return match[1]
+  return "undefine"
 }

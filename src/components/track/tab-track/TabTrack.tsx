@@ -20,7 +20,7 @@ const TabTrack = ({setTrackUpload,trackUpload,setValue}:
             const formData = new FormData();
             formData.append('fileUpload', audio)
 
-            try {
+
                 const res = await axios.post(
                     `${process.env.NEXT_PUBLIC_BACKEND_URL}/files/upload-mp3`,
                     formData, {
@@ -37,10 +37,11 @@ const TabTrack = ({setTrackUpload,trackUpload,setValue}:
                     }
                 )
                 setTrackUpload((prev : any) =>({...prev,uploadedFileName:res.data.data.result}))
+                if(res.status >= 400) {
+                    setResMessage("có lỗi xảy ra, vui lòng đăng nhập lại")
+                }
 
-            } catch (error) {
-                setResMessage("có lỗi xảy ra, vui lòng đăng nhập lại")
-            }
+
         }
     }, [session])
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({

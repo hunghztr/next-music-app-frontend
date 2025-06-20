@@ -1,28 +1,21 @@
-"use client";
 import "./globals.css";
-import {SessionProvider} from "next-auth/react";
-import ThemeRegistry from "@/components/theme-registry/theme.registry";
-import {TrackProvier} from "@/lib/TrackContext";
-import Header from "@/components/header/Header";
-import Footer from "@/components/footer/Footer";
+import {Metadata} from "next";
+import Wrapper from "@/lib/Wrapper";
 
-export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+export const metadata: Metadata = {
+    title: 'Sound Cloud',
+    description: 'Trang chủ',
+}
+
+export default function RootLayout({children,}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <html lang="en">
         <body>
-        <TrackProvier>
-            <SessionProvider>
-                <ThemeRegistry>
-                    <Header/>
-                    {children}
-                    <Footer/>
-                </ThemeRegistry>
-            </SessionProvider>
-        </TrackProvier>
+        <Wrapper>
+            {children}
+        </Wrapper>
         </body>
         </html>
     );

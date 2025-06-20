@@ -11,6 +11,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import {useTrackContext} from "@/lib/TrackContext";
 import PauseIcon from "@mui/icons-material/Pause";
 import Link from 'next/link';
+import {convertSlugUrl} from "@/utils/fetchApi";
 const Profile = ({res} :{res :IBackendRes<IPage<ITrackTop>>}) =>{
     const {currentTrack,setCurrentTrack} = useTrackContext() as ITrackContext;
 
@@ -21,7 +22,7 @@ const Profile = ({res} :{res :IBackendRes<IPage<ITrackTop>>}) =>{
                     width: 600,marginTop:'20px' }}>
                     <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <CardContent sx={{ flex: "1 0 auto" }}>
-                            <Link href={`/track/${item.id}?audio=${item.trackUrl}&id=${item.id}`}>
+                            <Link href={`/track/${convertSlugUrl(item.title)}-${item.id}.html?audio=${item.trackUrl}`}>
                             <Typography component="div" variant="h5">
                                 {item.title}
                             </Typography>

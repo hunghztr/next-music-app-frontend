@@ -15,11 +15,12 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { Avatar, Container, Button } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 import Link from "next/link";
 import { signOut, useSession} from "next-auth/react";
-import {useRenderByClient} from "@/utils/customHook";
-
+import Image from "next/image";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -209,7 +210,10 @@ export default function Header() {
                   <span>
                     <Link href={"/track/upload"}>Uploads</Link>
                   </span>
-                  <Avatar onClick={handleProfileMenuOpen}>H</Avatar>
+                  <Image onClick={handleProfileMenuOpen}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/test.png`}
+                  alt="Avatar"
+                  width={35} height={35}/>
                 </>
               ) : (
                 <Link href={"/auth/signin"}>

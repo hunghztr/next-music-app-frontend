@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
-import {TextField} from "@mui/material";
+import TextField from "@mui/material/TextField";
 import CommentCard from "@/components/track/CommentCard";
 import {sendRequest} from "@/utils/fetchApi";
 import {useState} from "react";
 import {useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
-
+import Image from "next/image";
 dayjs.extend(relativeTime)
 const CommentTrack = ({track, comments,wave,setPlay}
                       : { track: IShareTrack|null, comments: ITrackComment[]|null,wave:any,
@@ -47,9 +47,9 @@ setPlay : (v : boolean)=> void}) => {
             <TextField fullWidth label="Comment" onKeyDown={handlePressEnter} value={mess}
             onChange={(e)=>setMess(e.target.value)}/>
             <div className='flex gap-12 mt-6'>
-                <div className=''>
-                    <img className='border ring-1 rounded-full'
-                         src={`/avatar/user.png`} width='200px'/>
+                <div>
+                    <Image className='border ring-1 rounded-full'
+                           src={`/avatar/user.png`} alt="Avatar" width={200} height={200}/>
                     <p className='mt-6 font-bold text-[1.3vw] text-center'>{track?.uploader.name}</p>
                 </div>
                 <div className='w-full'>
