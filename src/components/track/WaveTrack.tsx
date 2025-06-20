@@ -35,7 +35,6 @@ const WaveTrack = ({track, comments, resLikedTrack}:
             barWidth: 2,
 
         });
-        console.log(first , ' <<<<<')
         useEffect(() => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
