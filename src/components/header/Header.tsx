@@ -1,26 +1,18 @@
 "use client";
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import {
+  AppBar, Box, Toolbar, IconButton, Typography,
+  InputBase, MenuItem, Menu, Container, Button
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import Avatar from "@mui/material/Avatar";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
 import Link from "next/link";
-import { signOut, useSession} from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -51,7 +43,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -62,12 +53,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-
   const { data: session } = useSession();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -76,172 +65,139 @@ export default function Header() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setMobileMoreAnchorEl(null);
+  };
+
+  // Desktop menu (click avatar)
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-            <Link href={`/profile/${session?.user.id}`}>Profile</Link>
-      </MenuItem>
-      <MenuItem onClick={() =>{
-        handleMenuClose()
-        signOut()
-      }}>Logout</MenuItem>
-    </Menu>
+  const renderMenu = session && (
+      <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          id={menuId}
+          keepMounted
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMenuOpen}
+          onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose}>
+          <Link href={`/profile/${session?.user.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            Profile
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={() => {
+          handleMenuClose();
+          signOut();
+        }}>
+          Logout
+        </MenuItem>
+      </Menu>
   );
 
+  // Mobile menu (click MoreIcon)
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
+      <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          id={mobileMenuId}
+          keepMounted
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMobileMenuOpen}
+          onClose={handleMenuClose}
+      >
+        {session ? (
+            <>
+              <MenuItem>
+                <Link href={`/profile/${session.user.id}`} style={{ display: 'flex', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
+                  <IconButton size="large" color="inherit">
+                    <AccountCircle />
+                  </IconButton>
+                  <p>Profile</p>
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={() => {
+                handleMenuClose();
+                signOut();
+              }}>
+                <IconButton size="large" color="inherit">
+                  <LogoutIcon />
+                </IconButton>
+                <p>Logout</p>
+              </MenuItem>
+            </>
+        ) : (
+            <MenuItem>
+              <Link href="/auth/signin" style={{ display: 'flex', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
+                <IconButton size="large" color="inherit">
+                  <AccountCircle />
+                </IconButton>
+                <p>Login</p>
+              </Link>
+            </MenuItem>
+        )}
+      </Menu>
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ background: "#131a2c" }}>
-        <Container>
-          <Toolbar>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              <Link href={"/"}>Sound Clound</Link>
-            </Typography>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box
-              sx={{
-                display: { xs: "none", md: "flex" },
-                alignItems: "center",
-                gap: "20px",
-                cursor: "pointer",
-              }}
-            >
-              {(session) ? (
-                <>
-                  <span>
-                    <Link href={"/playlist"}>Playlist</Link>
-                  </span>
-                  <span>
-                    <Link href={"/like"}>Likes</Link>
-                  </span>
-                  <span>
-                    <Link href={"/track/upload"}>Uploads</Link>
-                  </span>
-                  <Image onClick={handleProfileMenuOpen}
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/test.png`}
-                  alt="Avatar"
-                  width={35} height={35}/>
-                </>
-              ) : (
-                <Link href={"/auth/signin"}>
-                  <Button
-                      // onClick={() => signIn()}
-                      variant="outlined" color="inherit">
-                    Login
-                  </Button>
-                </Link>
-              )}
-            </Box>
-            <Box sx={{ display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" sx={{ background: "#131a2c" }}>
+          <Container>
+            <Toolbar>
+              <Typography variant="h6" noWrap component="div" sx={{ display: { xs: "none", sm: "block" } }}>
+                <Link href={"/"}>Sound Clound</Link>
+              </Typography>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+              </Search>
+              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "20px", cursor: "pointer" }}>
+                {session ? (
+                    <>
+                      <span><Link href={"/playlist"}>Playlist</Link></span>
+                      <span><Link href={"/like"}>Likes</Link></span>
+                      <span><Link href={"/track/upload"}>Uploads</Link></span>
+                      <Image
+                          onClick={handleProfileMenuOpen}
+                          className="rounded-full"
+                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${session.user.avatar || 'user.png'}`}
+                          alt="Avatar"
+                          width={35}
+                          height={35}
+                      />
+                    </>
+                ) : (
+                    <Link href={"/auth/signin"}>
+                      <Button variant="outlined" color="inherit">Login</Button>
+                    </Link>
+                )}
+              </Box>
+              <Box sx={{ display: { xs: "flex", md: "none" } }}>
+                <IconButton
+                    size="large"
+                    aria-label="show more"
+                    aria-controls={mobileMenuId}
+                    aria-haspopup="true"
+                    onClick={handleMobileMenuOpen}
+                    color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
   );
 }
