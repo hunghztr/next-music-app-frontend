@@ -7,12 +7,10 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
@@ -117,6 +115,7 @@ export default function Header() {
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
+
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
@@ -203,7 +202,7 @@ export default function Header() {
                   <span>
                     <Link href={"/track/upload"}>Uploads</Link>
                   </span>
-                  <Image onClick={handleProfileMenuOpen}
+                  <Image onClick={handleProfileMenuOpen} className='rounded-full'
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${session.user.avatar?session.user.avatar:'user.png'}`}
                   alt="Avatar"
                   width={35} height={35}/>

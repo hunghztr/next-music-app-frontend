@@ -1,7 +1,7 @@
 "use client";
 import {useWaveSurfer} from "@/utils/customHook";
 import {useRouter, useSearchParams} from "next/navigation";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {Suspense, useCallback, useEffect, useRef, useState} from "react";
 import Button from "@mui/material/Button";
 import {WaveSurferOptions} from "wavesurfer.js";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -89,13 +89,12 @@ const WaveTrack = ({track, comments, resLikedTrack}:
             })
         }
         useEffect(() => {
-            if (track?.id !== currentTrack.id && currentTrack.isPlaying) {
+            if (currentTrack.isPlaying) {
                 wave?.pause()
                 setPlay(false)
             }
         }, [currentTrack]);
         const onPlayClick = useCallback(() => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             if (wave?.isPlaying()) {
                 wave?.pause()
                 if (track) setCurrentTrack({...currentTrack, isPlaying: false})
@@ -131,6 +130,7 @@ const WaveTrack = ({track, comments, resLikedTrack}:
             return percent + '%';
         }
         return (
+            <Suspense fallback={'loading'}>
             <>
                 <div className='w-full h-full relative'>
                     <div className='flex absolute top-3 w-fit'>
@@ -151,7 +151,7 @@ const WaveTrack = ({track, comments, resLikedTrack}:
                         </Button>
                         <div className='ml-5'>
                             <h1 className='font-bold text-[2vw]'>{track?.title}</h1>
-                            <h3 className='text-[1.2vw]'>{track?.uploader.name}</h3>
+                            <h3 className='text-[1.2vw]'>{track?.uploader?.name}</h3>
                         </div>
                     </div>
 
@@ -202,6 +202,7 @@ const WaveTrack = ({track, comments, resLikedTrack}:
                     <CommentTrack track={track || null} comments={comments || null} wave={wave} setPlay={setPlay}/>
                 </div>
             </>
+            </Suspense>
         );
     }
 ;

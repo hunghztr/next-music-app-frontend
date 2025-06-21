@@ -5,7 +5,7 @@ import {JWT} from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import {IUser} from "@/types/next-auth";
  const authOptions: AuthOptions = {
-    secret: process.env.NO_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: 'Hùng',

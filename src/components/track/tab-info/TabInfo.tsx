@@ -70,7 +70,7 @@ const TabInfo = ({trackUpload}:
         if(!imageFile){
             setResMessage("bạn chưa có ảnh")
             setOpenMessage(true);
-            return;
+            return undefined;
         }
         const formData = new FormData();
         formData.append("fileUpload",imageFile)
@@ -113,6 +113,7 @@ const TabInfo = ({trackUpload}:
     }
     const handleSave = async () =>{
         const getUrlImg = await handleSaveFile()
+        if(!getUrlImg) return;
         const isSuccess = await handleSaveInfo(getUrlImg)
         if(isSuccess){
             route.push(`/profile/${session?.user.id}`)
@@ -126,7 +127,7 @@ const TabInfo = ({trackUpload}:
         reader.onload = () => {
             const img = new window.Image();
             img.onload = () => {
-                if (img.width !== 250 || img.height !== 250) {
+                if (img.width !== 500 || img.height !== 500) {
                     setResMessage("Ảnh phải có kích thước đúng 250x250px");
                     setOpenMessage(true);
                     setImageFile(null);
@@ -159,9 +160,10 @@ const TabInfo = ({trackUpload}:
             <LinearProgressWithLabel value={trackUpload.progress}/>
             <div className='mt-10 flex'>
                 <div className='w-[20vw] flex flex-col'>
-                    <div className='bg-gray-400 w-[20vw] h-[40vh] mb-3 flex items-center justify-center'>
+                    <div className='bg-gray-800 w-[20vw] h-[40vh] mb-3 flex items-center justify-center'>
                         {previewUrl ? (
-                            <Image src={previewUrl} alt='Avatar' className='w-full h-full object-cover' />
+                            <Image src={previewUrl} alt='Avatar' width={250} height={250}
+                                   className='object-cover' />
                         ) : (
                             <span className='text-white'>Chưa có file</span>
                         )}

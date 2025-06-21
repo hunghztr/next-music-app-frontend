@@ -19,8 +19,9 @@ const Interaction = ({track,resLikedTrack} : {track : IShareTrack|null;
         }else{
             setLiked(false);
         }
-    },[track,liked])
+    },[track,liked,exist])
     const handleInteract =async () =>{
+
         const res = await sendRequest<IBackendRes<string>>({
             url:`${process.env.NEXT_PUBLIC_BACKEND_URL}/likes`,
             method:'POST',
@@ -38,14 +39,18 @@ const Interaction = ({track,resLikedTrack} : {track : IShareTrack|null;
             console.log(res.message)
         }
     }
+
     return (
         <div className="flex items-center justify-between w-full">
             {/* Nút Like bên trái */}
-            <IconButton
-                color={liked ? 'error' : 'default'}
-                onClick={() => handleInteract()}>
-                <FavoriteIcon />
-            </IconButton>
+
+                    <IconButton
+                        color={liked ? 'error' : 'default'}
+                        onClick={() =>{
+                            handleInteract()}}>
+                        <FavoriteIcon />
+                    </IconButton>
+
 
             {/* Like & View bên phải */}
             <div className="flex gap-2">

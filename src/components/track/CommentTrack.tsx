@@ -50,7 +50,7 @@ setPlay : (v : boolean)=> void}) => {
                 <div>
                     <Image className='border ring-1 rounded-full'
                            src={`/avatar/user.png`} alt="Avatar" width={200} height={200}/>
-                    <p className='mt-6 font-bold text-[1.3vw] text-center'>{track?.uploader.name}</p>
+                    <p className='mt-6 font-bold text-[1.3vw] text-center'>{track?.uploader?.name}</p>
                 </div>
                 <div className='w-full'>
                     {comments && comments.map(i => <CommentCard key={i.id} handleJump={handleJump} comment={i}/>

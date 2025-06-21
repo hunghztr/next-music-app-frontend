@@ -6,6 +6,7 @@ import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import ThemeRegistry from "@/components/theme-registry/theme.registry";
 import Script from "next/script";
+import LoadingWrapper from "@/lib/LoadingWrapper";
 const test = {
     "@context": "https://schema.org",
     "@type": "Store",
@@ -51,6 +52,7 @@ const test = {
 }
 export default function Wrapper({ children }: { children: React.ReactNode }) {
   return (
+      <LoadingWrapper >
     <SessionProvider>
       <TrackProvier>
           <ThemeRegistry>
@@ -62,5 +64,6 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
           </ThemeRegistry>
       </TrackProvier>
     </SessionProvider>
+      </LoadingWrapper>
   );
 }

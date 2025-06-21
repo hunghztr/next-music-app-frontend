@@ -113,12 +113,12 @@ const MainSlider = (props: IProps) => {
                                 />
                             </div>
 
-                            <div className="mt-1.5">
+                            <div className="mt-1.5 text-center">
                                 <Link href={`/track/${convertSlugUrl(i.title)}-${i.id}.html?audio=${i.trackUrl}`}>
-                                    <h3 className="font-bold">{i.title}</h3>
+                                    <h3 className="font-bold text-[1.3vw]">{i.title}</h3>
                                 </Link>
 
-                                <h5>{i.description}</h5>
+                                <h5 className='text-[1.1 vw]'>{i.description}</h5>
                             </div>
                         </div>
                     );

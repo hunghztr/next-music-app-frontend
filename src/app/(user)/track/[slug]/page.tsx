@@ -5,6 +5,7 @@ import {getServerSession} from "next-auth";
 
 import type {Metadata} from 'next'
 import authOptions from "@/utils/authOptions";
+import {notFound} from "next/navigation";
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -40,7 +41,10 @@ const DetailTrackPage = async ({params}: { params: Promise<{ slug: string }> }) 
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/get-id/${trackId}`,
         method: "GET",
     })
-
+    if(!res.data?.id) {
+        notFound()
+    }
+    // await new Promise(resolve => setTimeout(resolve, 3000))
     const resComment = await sendRequest<IBackendRes<IPage<ITrackComment>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/get-by-track`,
         method: "POST",
@@ -66,8 +70,10 @@ const DetailTrackPage = async ({params}: { params: Promise<{ slug: string }> }) 
                 height: '400px',
                 width: '100%'
             }}>
+
                 <WaveTrack resLikedTrack={resLikedTrack.data || null} track={res.data || null}
                            comments={resComment.data?.result || null}/>
+
             </Container>
         </div>
     )
