@@ -1,11 +1,14 @@
 'use client';
+import {AppProgressBar as ProgressBar} from 'next-nprogress-bar';
 
-import { SessionProvider } from "next-auth/react";
+import {SessionProvider} from "next-auth/react";
 import {TrackProvier} from "@/lib/TrackContext";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import ThemeRegistry from "@/components/theme-registry/theme.registry";
 import Script from "next/script";
+import {Suspense} from "react";
+
 const test = {
     "@context": "https://schema.org",
     "@type": "Store",
@@ -49,18 +52,26 @@ const test = {
         "longitude": "106.65856519879867"
     }
 }
-export default function Wrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <SessionProvider>
-      <TrackProvier>
-          <ThemeRegistry>
-          <Header/>
-          {children}
-          <Footer/>
-              <Script type="application/ld+json" id="structured-data-store"
-              dangerouslySetInnerHTML={{__html:JSON.stringify(test)}}></Script>
-          </ThemeRegistry>
-      </TrackProvier>
-    </SessionProvider>
-  );
+export default function Wrapper({children}: { children: React.ReactNode }) {
+    return (
+        <SessionProvider>
+            <TrackProvier>
+                <ThemeRegistry>
+                    <Header/>
+                    {children}
+                    <Suspense fallback={'loading'}>
+                    <ProgressBar
+                        height="5px"
+                        color="blue"
+                        options={{showSpinner: false}}
+                        shallowRouting
+                    />
+                    </Suspense>
+                    <Footer/>
+                    <Script type="application/ld+json" id="structured-data-store"
+                            dangerouslySetInnerHTML={{__html: JSON.stringify(test)}}></Script>
+                </ThemeRegistry>
+            </TrackProvier>
+        </SessionProvider>
+    );
 }
