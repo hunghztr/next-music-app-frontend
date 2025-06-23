@@ -6,6 +6,5 @@ export default function NotFound() {
             <h2>Not Found</h2>
             <p>Could not find requested resource , please try again</p>
             <Link href="/">Return Home</Link>
-        </div>
-    )
+        </div>)
 }
