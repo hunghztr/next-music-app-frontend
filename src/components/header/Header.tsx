@@ -7,18 +7,18 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import { Avatar, Container, Button } from "@mui/material";
-import Link from "next/link";
-import {signIn, signOut, useSession} from "next-auth/react";
 
+import MoreIcon from "@mui/icons-material/MoreVert";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { usePathname, useRouter } from "next/navigation";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -60,8 +60,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const path = usePathname();
   const { data: session } = useSession();
-
+  const route = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -104,12 +105,16 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link href={"profile"}>Profile</Link>
+        <Link href={`/profile/${session?.user.id}`}>Profile</Link>
       </MenuItem>
-      <MenuItem onClick={() =>{
-        handleMenuClose()
-        signOut()
-      }}>Logout</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          signOut();
+        }}
+      >
+        Logout
+      </MenuItem>
     </Menu>
   );
 
@@ -130,27 +135,23 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <Link href={`/profile/${session?.user.id}`}>
+        <MenuItem onClick={handleMobileMenuClose}>
+          <IconButton
+            size="large"
+            aria-label="show 17 new notifications"
+            color="inherit"
+          >
+            <MoreIcon />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      </Link>
+      <MenuItem
+        onClick={() => {
+          signOut();
+        }}
+      >
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -158,9 +159,9 @@ export default function Header() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <LogoutIcon />
         </IconButton>
-        <p>Profile</p>
+        <p>Log Out</p>
       </MenuItem>
     </Menu>
   );
@@ -178,7 +179,18 @@ export default function Header() {
             >
               <Link href={"/"}>Sound Clound</Link>
             </Typography>
-            <Search>
+            <Search
+              onChange={(e) => {
+                const input = e.target as HTMLInputElement;
+                console.log(input.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const input = e.target as HTMLInputElement;
+                  route.push(`/search?search=${input.value}`);
+                }
+              }}
+            >
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -197,23 +209,54 @@ export default function Header() {
               }}
             >
               {session ? (
-                <>
-                  <span>
+                <div className="flex gap-8 items-center">
+                  <span
+                    className={`${
+                      path.startsWith("/playlist")
+                        ? "bg-[#1a2238] text-blue-100 px-4 py-1 rounded-md"
+                        : ""
+                    }`}
+                  >
                     <Link href={"/playlist"}>Playlist</Link>
                   </span>
-                  <span>
+                  <span
+                    className={`${
+                      path.startsWith("/like")
+                        ? "bg-[#1a2238] text-blue-100 px-4 py-1 rounded-md"
+                        : ""
+                    }`}
+                  >
                     <Link href={"/like"}>Likes</Link>
                   </span>
-                  <span>
-                    <Link href={"/upload"}>Uploads</Link>
+                  <span
+                    className={`${
+                      path.startsWith("/track/upload")
+                        ? "bg-[#1a2238] text-blue-100 px-4 py-1 rounded-md"
+                        : ""
+                    }`}
+                  >
+                    <Link href={"/track/upload"}>Uploads</Link>
                   </span>
-                  <Avatar onClick={handleProfileMenuOpen}>H</Avatar>
-                </>
+                  <Image
+                    onClick={handleProfileMenuOpen}
+                    className="rounded-full"
+                    src={`${
+                      process.env.NEXT_PUBLIC_BACKEND_URL
+                    }/images/avatar/${
+                      session.user.avatar ? session.user.avatar : "user.png"
+                    }`}
+                    alt="Avatar"
+                    width={35}
+                    height={35}
+                  />
+                </div>
               ) : (
                 <Link href={"/auth/signin"}>
                   <Button
-                      // onClick={() => signIn()}
-                      variant="outlined" color="inherit">
+                    // onClick={() => signIn()}
+                    variant="outlined"
+                    color="inherit"
+                  >
                     Login
                   </Button>
                 </Link>

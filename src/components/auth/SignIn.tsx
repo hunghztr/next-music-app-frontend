@@ -1,5 +1,11 @@
 'use client'
-import { Avatar, Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import  Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import LockIcon from '@mui/icons-material/Lock';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -11,10 +17,10 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Link from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
 import { useRouter } from 'next/navigation'
+import AlertInfo from "@/components/alert/AlertInfo";
+import * as React from "react";
 const AuthSignIn = () => {
     const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -63,13 +69,7 @@ const AuthSignIn = () => {
     }
 
     return (
-        <Box
-            sx={{
-                // backgroundImage: "linear-gradient(to bottom, #ff9aef, #fedac1, #d5e1cf, #b7e6d9)",
-                // backgroundColor: "#b7e6d9",
-                // backgroundRepeat: "no-repeat"
-            }}
-        >
+        <Box>
             <Grid container
                   sx={{
                       display: "flex",
@@ -194,19 +194,7 @@ const AuthSignIn = () => {
                     </div>
                 </Grid>
             </Grid>
-
-            <Snackbar
-                open={openMessage}
-                // autoHideDuration={5000}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-                <Alert
-                    onClose={() => setOpenMessage(false)}
-                    severity="error" sx={{ width: '100%' }}>
-                    {resMessage}
-                </Alert>
-            </Snackbar>
-
+            <AlertInfo openMessage={openMessage} setOpenMessage={setOpenMessage} resMessage={resMessage} />
         </Box>
 
     )

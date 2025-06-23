@@ -14,14 +14,15 @@ export const useWaveSurfer = (
 ) => {
   const [wave, setWave] = useState<WaveSurfer| null>(null);
   useEffect(() => {
-    // if (ref.current) {
+    if (ref.current) {
     const w = WaveSurfer.create({
       ...options,
       container: ref.current!,
     });
     setWave(w);
-    // }
-    return () => w.destroy();
+        return () => w.destroy();
+
+    }
   }, [ref, options]);
 
   return wave;

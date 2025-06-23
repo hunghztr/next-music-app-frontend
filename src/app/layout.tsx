@@ -1,6 +1,13 @@
-"use client";
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
+import { Metadata } from "next";
+import Wrapper from "@/lib/Wrapper";
+import LoadingWrapper from "@/lib/LoadingWrapper";
+import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Sonix",
+  description: "Trang chủ",
+};
 
 export default function RootLayout({
   children,
@@ -10,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SessionProvider>
-          {children}
-        </SessionProvider>
+        <Wrapper>
+          <Suspense fallback={null}>
+            <LoadingWrapper>{children}</LoadingWrapper>
+          </Suspense>
+        </Wrapper>
       </body>
     </html>
   );
