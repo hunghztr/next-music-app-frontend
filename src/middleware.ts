@@ -5,4 +5,5 @@ export default withAuth({
         error:'/error',
     }
 })
-export const config = {matcher:['/playlist','/like','/track/upload']}
+export const config = {matcher:['/playlist','/like','/track/upload',
+    '/admin/track','/admin/user','/admin']};

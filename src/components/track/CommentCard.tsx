@@ -20,7 +20,7 @@ const CommentCard = ({ comment,handleJump }:
     return (
         <Card sx={{ marginBottom: 2, borderRadius: 2, boxShadow: 3, width: '100%' }}>
             <CardHeader
-                avatar={<Avatar src={'/avatar/user.png'} />}
+                avatar={<Avatar src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${comment.user.avatar}`} />}
                 title={comment.user?.name || 'Unknown user'}
                 subheader={`${dayjs(comment.createdAt).fromNow()}`}
             />

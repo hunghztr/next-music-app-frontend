@@ -245,7 +245,7 @@ export default function Header() {
                     }/images/avatar/${
                       session.user.avatar ? session.user.avatar : "user.png"
                     }`}
-                    alt="Avatar"
+                    alt="A"
                     width={35}
                     height={35}
                   />

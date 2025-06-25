@@ -4,17 +4,17 @@ import { sendRequest } from "@/utils/fetchApi";
 
 export default async function Home() {
   const chillRes = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: "http://localhost:8080/api/v1/tracks/top",
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
     body: { category: "CHILL", limit: 10 },
   });
   const workoutRes = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: "http://localhost:8080/api/v1/tracks/top",
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
     body: { category: "WORKOUT", limit: 10 },
   });
   const partyRes = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: "http://localhost:8080/api/v1/tracks/top",
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
     body: { category: "PARTY", limit: 10 },
   });

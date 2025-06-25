@@ -204,9 +204,15 @@ const WaveTrack = ({
                         alt="Poster"
                         width={20}
                         height={20}
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/test.png`}
+                        src={`${
+                          process.env.NEXT_PUBLIC_BACKEND_URL
+                        }/images/avatar/${i?.user?.avatar || "user.png"}`}
                         className="object-contain"
-                        style={{ position: "absolute", left: percent }}
+                        style={{
+                          position: "absolute",
+                          left: percent,
+                          borderRadius: "50%",
+                        }}
                         onPointerMove={() => {
                           const hover = refHover.current!;
                           hover.style.width = percent;
