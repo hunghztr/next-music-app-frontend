@@ -177,7 +177,7 @@ export default function Header() {
               component="div"
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              <Link href={"/"}>Sound Clound</Link>
+              <Link href={"/"}>Sonix Music</Link>
             </Typography>
             <Search
               onChange={(e) => {
