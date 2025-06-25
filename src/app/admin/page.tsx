@@ -1,22 +1,21 @@
 import { sendRequest } from "@/utils/fetchApi";
-import { Button } from "@mui/material";
 import Image from "next/image";
 
 const AdminPage = async () => {
-  const chillRes = await sendRequest<IBackendRes<ITrackTop[]>>({
+  const popRes = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
-    body: { category: "CHILL", limit: 10 },
+    body: { category: "POP", limit: 10 },
   });
-  const workoutRes = await sendRequest<IBackendRes<ITrackTop[]>>({
+  const balladRes = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
-    body: { category: "WORKOUT", limit: 10 },
+    body: { category: "BALLAD", limit: 10 },
   });
-  const partyRes = await sendRequest<IBackendRes<ITrackTop[]>>({
+  const rapRes = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
-    body: { category: "PARTY", limit: 10 },
+    body: { category: "RAP", limit: 10 },
   });
 
   const renderTrackList = (tracks: ITrackTop[], title: string) => (
@@ -29,7 +28,7 @@ const AdminPage = async () => {
               {index + 1}
             </span>
             <Image
-              src={track.trackUrl || "/default-thumbnail.jpg"}
+              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
               alt={track.title}
               width={50}
               height={50}
@@ -56,11 +55,10 @@ const AdminPage = async () => {
         🎵 Top Bài Hát Thịnh Hành Theo Thể Loại
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        {renderTrackList(chillRes.data || [], "Chill")}
-        {renderTrackList(workoutRes.data || [], "Workout")}
-        {renderTrackList(partyRes.data || [], "🎉 Party")}
+        {renderTrackList(popRes.data || [], "Pop")}
+        {renderTrackList(balladRes.data || [], "Ballab")}
+        {renderTrackList(rapRes.data || [], "Rap")}
       </div>
-      <Button variant="outlined">Lưu vào Redis</Button>
     </div>
   );
 };

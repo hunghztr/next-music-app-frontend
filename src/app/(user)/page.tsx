@@ -3,26 +3,26 @@ import Container from "@mui/material/Container";
 import { sendRequest } from "@/utils/fetchApi";
 
 export default async function Home() {
-  const chillRes = await sendRequest<IBackendRes<ITrackTop[]>>({
+  const balladRes = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
-    body: { category: "CHILL", limit: 10 },
+    body: { category: "BALLAD", limit: 10 },
   });
-  const workoutRes = await sendRequest<IBackendRes<ITrackTop[]>>({
+  const popRes = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
-    body: { category: "WORKOUT", limit: 10 },
+    body: { category: "POP", limit: 10 },
   });
-  const partyRes = await sendRequest<IBackendRes<ITrackTop[]>>({
+  const rapRes = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/top`,
     method: "POST",
-    body: { category: "PARTY", limit: 10 },
+    body: { category: "RAP", limit: 10 },
   });
   return (
     <Container>
-      <MainSlider title={"Top Chill"} data={chillRes?.data || []} />
-      <MainSlider title={"Top Workout"} data={workoutRes?.data || []} />
-      <MainSlider title={"Top Party"} data={partyRes?.data || []} />
+      <MainSlider title={"Top Ballad"} data={balladRes?.data || []} />
+      <MainSlider title={"Top Pop"} data={popRes?.data || []} />
+      <MainSlider title={"Top Rap"} data={rapRes?.data || []} />
     </Container>
   );
 }
