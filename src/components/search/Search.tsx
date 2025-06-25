@@ -10,7 +10,7 @@ const Search = ({ tracks }: { tracks: ITrackTop[] }) => {
           className="flex items-center bg-white rounded-lg shadow-sm p-3 hover:bg-gray-50 transition"
         >
           <Image
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${i.imgUrl}`}
+            src={`${process.env.NEXT_PUBLIC_CLOUD_URL}/${i.imgUrl}`}
             alt="Track Image"
             width={80}
             height={80}

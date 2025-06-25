@@ -28,7 +28,7 @@ const AdminPage = async () => {
               {index + 1}
             </span>
             <Image
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+              src={`${process.env.NEXT_PUBLIC_CLOUD_URL}/${track.imgUrl}`}
               alt={track.title}
               width={50}
               height={50}

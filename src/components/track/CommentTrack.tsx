@@ -63,7 +63,7 @@ const CommentTrack = ({
         <div>
           <Image
             className="border ring-1 rounded-full"
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${
+            src={`${process.env.NEXT_PUBLIC_CLOUD_URL}/${
               track?.uploader.avatar || "user.png"
             }`}
             alt="Avatar"

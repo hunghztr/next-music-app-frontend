@@ -204,9 +204,9 @@ const WaveTrack = ({
                         alt="Poster"
                         width={20}
                         height={20}
-                        src={`${
-                          process.env.NEXT_PUBLIC_BACKEND_URL
-                        }/images/avatar/${i?.user?.avatar || "user.png"}`}
+                        src={`${process.env.NEXT_PUBLIC_CLOUD_URL}/${
+                          i?.user?.avatar || "user.png"
+                        }`}
                         className="object-contain"
                         style={{
                           position: "absolute",
@@ -225,7 +225,7 @@ const WaveTrack = ({
           </div>
           <div className="w-[250px] h-[250px] bg-gray-400 absolute right-0 top-1/2 -translate-y-1/2">
             <Image
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+              src={`${process.env.NEXT_PUBLIC_CLOUD_URL}/${track?.imgUrl}`}
               alt="Poster"
               fill
               sizes={"250px"}

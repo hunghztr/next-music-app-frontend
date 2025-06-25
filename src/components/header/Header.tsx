@@ -240,9 +240,7 @@ export default function Header() {
                   <Image
                     onClick={handleProfileMenuOpen}
                     className="rounded-full"
-                    src={`${
-                      process.env.NEXT_PUBLIC_BACKEND_URL
-                    }/images/avatar/${
+                    src={`${process.env.NEXT_PUBLIC_CLOUD_URL}/${
                       session.user.avatar ? session.user.avatar : "user.png"
                     }`}
                     alt="A"
